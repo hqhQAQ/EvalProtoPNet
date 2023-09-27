@@ -1,0 +1,10 @@
+.vscode/
+__pycache__/
+datasets
+pretrained_models
+datasets/
+pretrained_models/
+output_view/
+output_debug/
+output_cosine/
+output_ablation/

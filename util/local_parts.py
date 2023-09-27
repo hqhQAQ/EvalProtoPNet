@@ -9,7 +9,6 @@ def in_bbox(loc, bbox):
     return loc[0] >= bbox[0] and loc[0] <= bbox[1] and loc[1] >= bbox[2] and loc[1] <= bbox[3]
 
 data_root = 'datasets/CUB_200_2011'
-out_dir = 'output_view/parts'
 
 img_txt = os.path.join(data_root, 'images.txt')
 cls_txt = os.path.join(data_root, 'image_class_labels.txt')
@@ -18,6 +17,7 @@ train_txt = os.path.join(data_root, 'train_test_split.txt')
 part_cls_txt = os.path.join(data_root, 'parts', 'parts.txt')
 part_loc_txt = os.path.join(data_root, 'parts', 'part_locs.txt')
 
+# id_to_path: Get the image path of each image according to its image id
 id_to_path = {}
 with open(img_txt, 'r') as f:
     img_lines = f.readlines()
@@ -26,6 +26,7 @@ for img_line in img_lines:
     img_folder, img_name = img_path.split('/')[0], img_path.split('/')[1]
     id_to_path[img_id] = (img_folder, img_name)
 
+# id_to_bbox: Get the bounding box annotation (bird part) of each image according to its image id
 id_to_bbox = {}
 with open(bbox_txt, 'r') as f:
     bbox_lines = f.readlines()
@@ -35,7 +36,7 @@ for bbox_line in bbox_lines:
     bbox_x2, bbox_y2 = bbox_x + bbox_width, bbox_y + bbox_height
     id_to_bbox[img_id] = (bbox_x, bbox_y, bbox_x2, bbox_y2)
 
-# id_to_cls = {}
+# cls_to_id: Get the image ids of each class
 cls_to_id = {}
 with open(cls_txt, 'r') as f:
     cls_lines = f.readlines()
@@ -45,6 +46,7 @@ for cls_line in cls_lines:
         cls_to_id[cls_id] = []
     cls_to_id[cls_id].append(img_id)
 
+# id_to_train: Get the training/test label of each image according to its image id
 id_to_train = {}
 with open(train_txt, 'r') as f:
     train_lines = f.readlines()
@@ -52,6 +54,7 @@ for train_line in train_lines:
     img_id, is_train = int(train_line.split(' ')[0]), int(train_line.split(' ')[1][:-1])
     id_to_train[img_id] = is_train
 
+# part_id_to_part: Get the part name of each object part according to its part id
 part_id_to_part = {}
 with open(part_cls_txt, 'r') as f:
     part_cls_lines = f.readlines()
@@ -59,7 +62,9 @@ for part_cls_line in part_cls_lines:
     id_len = len(part_cls_line.split(' ')[0])
     part_id, part_name = part_cls_line[:id_len], part_cls_line[id_len + 1:]
     part_id_to_part[part_id] = part_name
+part_num = len(part_id_to_part.keys())
 
+# id_to_part_loc: Get the part annotations of each image according to its image id
 id_to_part_loc = {}
 with open(part_loc_txt, 'r') as f:
     part_loc_lines = f.readlines()

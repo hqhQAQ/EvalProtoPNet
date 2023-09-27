@@ -1,15 +1,12 @@
 import os
-from statistics import mean
-from cv2 import transform
+import pandas as pd
 from torchvision.datasets.folder import default_loader
 from torch.utils.data import Dataset
-import pandas as pd
-# from tools.stanford_dogs import Dogs
 
 class Cub2011Eval(Dataset):
-    base_folder = 'images'
+    base_folder = 'test_cropped'
 
-    def __init__(self, root, train=True, transform=None, loader=default_loader):
+    def __init__(self, root, train=True, transform=None):
         self.root = os.path.expanduser(root)
         self.transform = transform
         self.loader = default_loader
