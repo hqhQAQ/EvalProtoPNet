@@ -21,6 +21,7 @@ pandas==1.4.3
 matplotlib==3.5.2
 scikit-learn==1.1.1
 numpy==1.22.0
+tqdm==4.66.1
 ```
 
 ## Dataset Preparation
